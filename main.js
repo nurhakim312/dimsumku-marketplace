@@ -1,31 +1,36 @@
-document.querySelectorAll('.btnDetail').forEach(item => {
-    item.addEventListener('click',(e) => {
-        let parent = e.target.parentNode.parentNode;
-        
-        let gambar = parent.querySelector('.card-img-top').src;
-        let harga = parent.querySelector('.harga').innerHTML;
-        let judul = parent.querySelector('.card-text').innerHTML;
-        let deskripsi = parent.querySelector('.deskripsi')?parent.querySelector('.deskripsi').innerHTML : '<i>Tidak ada informasi deskripsi yang tersedia</i>';
-        
+document.addEventListener('DOMContentLoaded', function () {
+    // Ambil semua tombol detail di katalog
+    const detailButtons = document.querySelectorAll('.btnDetail');
+    // Ambil tombol rahasia pemicu modal
+    const modalTrigger = document.querySelector('.btnModal');
 
+    detailButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // Cari kartu produk terdekat dari tombol yang diklik
+            const card = this.closest('.card');
+            
+            // Ambil data dari elemen di dalam kartu tersebut
+            const judul = card.querySelector('.card-text').innerText;
+            const deskripsi = card.querySelector('.deskripsi').innerText;
+            const harga = card.querySelector('.harga').innerText;
+            const srcGambar = card.querySelector('.card-img-top').getAttribute('src');
 
-        let tombolModal = document.querySelector('.btnModal');
-        tombolModal.click();
+            // Masukkan data ke dalam elemen Modal
+            document.querySelector('.modalTitle').innerText = judul;
+            document.querySelector('.modalDeskripsi').innerText = deskripsi;
+            document.querySelector('.modalHarga').innerText = harga;
+            document.querySelector('.modalImage').innerHTML = `<img src="${srcGambar}" class="img-fluid rounded-3 mb-3 w-100" alt="${judul}">`;
 
-        document.querySelector('.modalTitle').innerHTML = judul;
-        let image =document.createElement('img');
-        image.src = gambar;
-        image.classList.add('w-100');
-        document.querySelector('.modalImage').innerHTML = "";
-        document.querySelector('.modalImage').appendChild(image);
-        document.querySelector('.modalDeskripsi').innerHTML = deskripsi;
-        document.querySelector('.modalHarga').innerHTML = harga;
+            // Atur link pesan otomatis ke WhatsApp (Sesuaikan nomor WA di sini)
+            const btnBeli = document.querySelector('.btnBeli');
+            const nomorWA = "628123456789"; // Ganti dengan nomor WhatsApp kamu
+            const pesan = encodeURIComponent(`Halo DimsumKu! Saya mau pesan *${judul}* (${harga}). Bagaimana langkah selanjutnya?`);
+            btnBeli.setAttribute('href', `https://wa.me/${nomorWA}?text=${pesan}`);
 
-
-        const nohp = '6287858826267';
-        let pesan = 'https://api.whatsapp.com/send?phone=${nohp }&text=Halo, saya mau memesan menu ini ${gambar}';
-        
-        document.querySelector('.btnBeli').href = pesan;
-    
+            // Klik otomatis tombol modal tersembunyi untuk memunculkan pop-up
+            if (modalTrigger) {
+                modalTrigger.click();
+            }
+        });
     });
 });

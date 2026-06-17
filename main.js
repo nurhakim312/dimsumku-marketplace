@@ -23,7 +23,7 @@ document.querySelectorAll('.btnDetail').forEach(item => {
 
 
         const nohp = '6287858826267';
-        let pesan = 'https://api.whatsapp.com/send?phone=${nohp }&text=Halo, saya mau memesan menu ini ${gambar}';
+        let pesan = 'https://api.whatsapp.com/send?phone=${nohp}&text=Halo, saya mau memesan menu ini ${judul}';
 
         document.querySelector('.btnBeli').href = pesan;
     

@@ -162,7 +162,22 @@
                         <li class="nav-item"><a href="#ulasan" class="nav-link text-dark fw-medium">Ulasan</a></li>
                         
                         <!-- Cart Icon Marketplace -->
-                        <li class="nav-item d-none d-lg-block ms-2 border-start ps-3">
+                        <!-- Elemen keranjang ini sebelumnya disembunyikan di layar kecil dan akan dihapus dari sini. -->
+                        <!-- Ini dipindahkan agar selalu terlihat, di luar menu yang bisa dilipat (collapsible menu). -->
+                        <!-- <li class="nav-item d-none d-lg-block ms-2 border-start ps-3"> -->
+                        <!--     <a href="#" class="position-relative text-dark text-decoration-none" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas"> -->
+                        <!--         <i class="bi bi-cart3 fs-4"></i> -->
+                        <!--         <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;"> -->
+                        <!--             0 -->
+                        <!--             <span class="visually-hidden">item di keranjang</span> -->
+                        <!--         </span> -->
+                        <!--     </a> -->
+                        <!-- </li> -->
+                    </ul>
+                </div>
+
+                <!-- Cart Icon Marketplace (Selalu terlihat di semua ukuran layar) -->
+                <div class="d-flex align-items-center ms-auto me-3">
                             <a href="#" class="position-relative text-dark text-decoration-none" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
                                 <i class="bi bi-cart3 fs-4"></i>
                                 <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
@@ -170,7 +185,6 @@
                                     <span class="visually-hidden">item di keranjang</span>
                                 </span>
                             </a>
-                        </li>
                     </ul>
                 </div>
             </div>

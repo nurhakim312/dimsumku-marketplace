@@ -9,6 +9,14 @@
     <!-- Menggunakan Bootstrap Icons untuk Footer & Ulasan -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Memberikan jarak agar judul section tidak tertutup sticky navbar saat diklik */
+        #menu, #ulasan, #tentang-kami, #cara-beli {
+            scroll-margin-top: 90px;
+        }
+
         /* Memastikan transisi halus untuk interaksi tombol */
         .btnDetail, .btnBeli, .category-pill {
             transition: all 0.3s ease;
@@ -17,10 +25,30 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
-        /* Style tambahan agar gambar katalog terlihat rapi & seragam */
-        .card-img-top {
+        /* Zoom effect pada gambar produk */
+        .product-card-img-container {
+            overflow: hidden;
             height: 240px;
+        }
+        .card-img-top {
+            height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .product-item:hover .card-img-top {
+            transform: scale(1.1);
+        }
+        /* Animasi Badge Keranjang */
+        @keyframes cartBounce {
+            0%, 100% { transform: translate(100%, -50%) scale(1); }
+            50% { transform: translate(100%, -50%) scale(1.4); }
+        }
+        .cart-bounce {
+            animation: cartBounce 0.4s ease-in-out;
+        }
+        /* Floating WA Button */
+        .floating-wa {
+            position: fixed; bottom: 90px; right: 20px; z-index: 1000;
         }
         /* Mengurangi distorsi teks pada paragraf */
         p {
@@ -74,6 +102,11 @@
     </style>
 </head>
 <body class="bg-light py-0 py-md-4">
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/6287858826267" target="_blank" class="floating-wa btn btn-success rounded-circle shadow-lg d-flex align-items-center justify-content-center" style="width: 55px; height: 55px;">
+        <i class="bi bi-whatsapp fs-3"></i>
+    </a>
+
     <!-- Main Wrapper App -->
     <div class="container p-0 mb-4 rounded-3 shadow-lg bg-white overflow-hidden">
         
@@ -130,10 +163,10 @@
                         
                         <!-- Cart Icon Marketplace -->
                         <li class="nav-item d-none d-lg-block ms-2 border-start ps-3">
-                            <a href="#menu" class="position-relative text-dark text-decoration-none">
+                            <a href="#" class="position-relative text-dark text-decoration-none" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
                                 <i class="bi bi-cart3 fs-4"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
-                                    3
+                                <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
+                                    0
                                     <span class="visually-hidden">item di keranjang</span>
                                 </span>
                             </a>
@@ -177,10 +210,12 @@
                 <!-- Varian 1 -->
                 <div class="col product-item" data-category="dikukus">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
-                        <img src="dimsum1.png" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80';" 
-                             class="card-img-top" 
-                             alt="Dimsum Ayam Original">
+                        <div class="product-card-img-container">
+                            <img src="dimsum1.png" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80';" 
+                                 class="card-img-top" 
+                                 alt="Dimsum Ayam Original">
+                        </div>
                         <div class="card-body pb-2">
                             <h6 class="card-title fw-bold text-dark mb-1">Dimsum Ayam Original</h6>
                             <div class="d-flex align-items-center mb-2">
@@ -211,10 +246,12 @@
                         <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 rounded-end-pill mt-3 shadow-sm fw-bold" style="font-size: 0.8rem; z-index: 2;">
                             Terlaris 🔥
                         </div>
-                        <img src="dimsum2.png" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1496116211227-7d3ccb8f4128?auto=format&fit=crop&w=600&q=80';" 
-                             class="card-img-top" 
-                             alt="Dimsum Ayam Mentai">
+                        <div class="product-card-img-container">
+                            <img src="dimsum2.png" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1496116211227-7d3ccb8f4128?auto=format&fit=crop&w=600&q=80';" 
+                                 class="card-img-top" 
+                                 alt="Dimsum Ayam Mentai">
+                        </div>
                         <div class="card-body pb-2">
                             <h6 class="card-title fw-bold text-dark mb-1">Dimsum Ayam Mentai</h6>
                             <div class="d-flex align-items-center mb-2">
@@ -241,10 +278,12 @@
                 <!-- Varian 3 -->
                 <div class="col product-item" data-category="digoreng">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
-                        <img src="dimsum3.png" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80';" 
-                             class="card-img-top" 
-                             alt="Dimsum Goreng Keju">
+                        <div class="product-card-img-container">
+                            <img src="dimsum3.png" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80';" 
+                                 class="card-img-top" 
+                                 alt="Dimsum Goreng Keju">
+                        </div>
                         <div class="card-body pb-2">
                             <h6 class="card-title fw-bold text-dark mb-1">Dimsum Goreng Keju</h6>
                             <div class="d-flex align-items-center mb-2">
@@ -275,10 +314,12 @@
                         <div class="position-absolute top-0 start-0 bg-warning text-dark px-3 py-1 rounded-end-pill mt-3 shadow-sm fw-bold" style="font-size: 0.8rem; z-index: 2;">
                             Rekomendasi ⭐
                         </div>
-                        <img src="dimsum4.png" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80';" 
-                             class="card-img-top" 
-                             alt="Dimsum Goreng Keju Mentai">
+                        <div class="product-card-img-container">
+                            <img src="dimsum4.png" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80';" 
+                                 class="card-img-top" 
+                                 alt="Dimsum Goreng Keju Mentai">
+                        </div>
                         <div class="card-body pb-2">
                             <h6 class="card-title fw-bold text-dark mb-1">Dimsum Goreng Keju Mentai</h6>
                             <div class="d-flex align-items-center mb-2">
@@ -309,10 +350,12 @@
                         <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 rounded-end-pill mt-3 shadow-sm fw-bold" style="font-size: 0.8rem; z-index: 2;">
                             Terlaris 🔥
                         </div>
-                        <img src="matchalatte.avif" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=600&q=80';" 
-                             class="card-img-top" 
-                             alt="MatchaLatte">
+                        <div class="product-card-img-container">
+                            <img src="matchalatte.avif" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=600&q=80';" 
+                                 class="card-img-top" 
+                                 alt="MatchaLatte">
+                        </div>
                         <div class="card-body pb-2">
                             <h6 class="card-title fw-bold text-dark mb-1">MatchaLatte</h6>
                             <div class="d-flex align-items-center mb-2">
@@ -339,10 +382,16 @@
                 <!-- Minuman 2 -->
                 <div class="col product-item" data-category="minuman">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
-                        <img src="cappucino.jpg" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=600&q=80';" 
-                             class="card-img-top" 
-                             alt="Cappuchino">
+                        <!-- Badge Rekomendasi -->
+                        <div class="position-absolute top-0 start-0 bg-warning text-dark px-3 py-1 rounded-end-pill mt-3 shadow-sm fw-bold" style="font-size: 0.8rem; z-index: 2;">
+                            Rekomendasi ⭐
+                        </div>
+                        <div class="product-card-img-container">
+                            <img src="cappucino.jpg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=600&q=80';" 
+                                 class="card-img-top" 
+                                 alt="Cappuchino">
+                        </div>
                         <div class="card-body pb-2">
                             <h6 class="card-title fw-bold text-dark mb-1">Cappuchino</h6>
                             <div class="d-flex align-items-center mb-2">
@@ -363,10 +412,12 @@
                 <!-- Minuman 3 -->
                 <div class="col product-item" data-category="minuman">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
-                        <img src="creamylatte.jpg" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1461023233037-9619c23e6d29?auto=format&fit=crop&w=600&q=80';" 
-                             class="card-img-top" 
-                             alt="CreamyLatte">
+                        <div class="product-card-img-container">
+                            <img src="creamylatte.jpg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1461023233037-9619c23e6d29?auto=format&fit=crop&w=600&q=80';" 
+                                 class="card-img-top" 
+                                 alt="CreamyLatte">
+                        </div>
                         <div class="card-body pb-2">
                             <h6 class="card-title fw-bold text-dark mb-1">CreamyLatte</h6>
                             <div class="d-flex align-items-center mb-2">
@@ -387,10 +438,12 @@
                 <!-- Minuman 4 -->
                 <div class="col product-item" data-category="minuman">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
-                        <img src="americano.jpg" 
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&w=600&q=80';" 
-                             class="card-img-top" 
-                             alt="Americano">
+                        <div class="product-card-img-container">
+                            <img src="americano.jpg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&w=600&q=80';" 
+                                 class="card-img-top" 
+                                 alt="Americano">
+                        </div>
                         <div class="card-body pb-2">
                             <h6 class="card-title fw-bold text-dark mb-1">Americano</h6>
                             <div class="d-flex align-items-center mb-2">
@@ -634,6 +687,29 @@
             </div>
         </div>
 
+        <!-- Chef Character Section (Karakter Chef Lucu) -->
+        <div id="chef-character-section" class="px-4 py-5 bg-light text-center">
+            <div class="container">
+                <div class="row justify-content-center align-items-center g-4">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <!-- Ganti URL gambar ini dengan karakter chef lucu yang Anda inginkan -->
+                        <img src="chef-softboy.png" 
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/300x300?text=Chef+DimsumKu';" 
+                             alt="Chef DimsumKu Character" 
+                             class="img-fluid rounded-circle shadow-lg mb-4" 
+                             style="max-width: 250px; height: auto; object-fit: cover;">
+                        <h3 class="fw-bold text-dark mb-3">Si Chef DimsumKu Siap Melayani!</h3>
+                        <p class="text-muted mb-4 px-lg-5">
+                            Punya pertanyaan atau ingin memesan dimsum favoritmu secara langsung? Jangan ragu untuk menghubungi Chef kami!
+                        </p>
+                        <a href="https://wa.me/6287858826267" target="_blank" class="btn btn-success btn-lg mt-2 rounded-pill shadow-sm">
+                            <i class="bi bi-whatsapp me-2"></i> Chat Admin Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer ala Marketplace -->
         <footer class="bg-light pt-5 pb-4 px-4 px-md-5">
             <div class="container-fluid p-0">
@@ -762,10 +838,13 @@
                                 <div class="modalDeskripsi text-muted small" style="line-height: 1.6;"></div>
                             </div>
                             <div class="mt-auto pt-4">
-                                <div class="d-grid gap-2">
-                                    <a href="" target="_blank" class="btn btn-warning btnBeli py-3 fw-bold text-dark d-flex align-items-center justify-content-center gap-2">
-                                        <i class="bi bi-whatsapp fs-5"></i> Checkout via WhatsApp
-                                    </a>
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <input type="number" id="modalQty" class="form-control py-3 text-center fw-bold" value="1" min="1">
+                                    </div>
+                                    <div class="col-8">
+                                        <button type="button" id="btnAddToCart" class="btn btn-warning py-3 fw-bold text-dark w-100"><i class="bi bi-cart-plus me-1"></i> + Keranjang</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -775,11 +854,68 @@
         </div>
     </div>
 
+    <!-- Offcanvas Keranjang Belanja (Lebih Profesional dari Modal) -->
+    <div class="offcanvas offcanvas-end shadow-lg border-0" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+        <div class="offcanvas-header border-bottom py-3">
+            <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel"><i class="bi bi-cart3 me-2"></i>Keranjang Saya</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0 d-flex flex-column">
+            <div class="flex-grow-1 overflow-auto">
+                <div class="container-fluid p-0 text-center py-5 px-3">
+                    <div id="cartEmptyMsg">
+                        <i class="bi bi-cart-x-fill fs-1 text-primary mb-3 d-block"></i>
+                        <h5 class="fw-bold text-dark mb-3">Wah, keranjangmu masih kosong nih.</h5>
+                        <p class="text-muted mb-4">Yuk, tambahkan dimsum favoritmu ke keranjang!</p>
+                        <button class="btn btn-primary btn-lg rounded-pill" data-bs-dismiss="offcanvas">Mulai Belanja</button>
+                    </div>
+                    <div id="cartItemsList" class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                        <!-- Item keranjang akan muncul di sini via JS -->
+                    </div>
+                </div>
+            </div>
+            <div id="cartFooter" class="border-top d-none flex-column align-items-stretch p-3 bg-light">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="fw-bold fs-5">Total Estimasi:</span>
+                    <span id="cartTotalPrice" class="text-danger fw-bold fs-4">Rp 0</span>
+                </div>
+                <button id="btnCheckoutWA" class="btn btn-success py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-whatsapp fs-5"></i> Pesan via WhatsApp Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification (Notifikasi Pojok) -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+        <div id="cartToast" class="toast align-items-center text-white bg-dark border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-3">
+                    <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px;">
+                        <i class="bi bi-cart-check-fill text-dark"></i>
+                    </div>
+                    <span id="toastMessage" class="fw-medium">Produk berhasil ditambahkan!</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Custom JS -->
     <script>
+        // Global State untuk Keranjang
+        let cartItems = JSON.parse(localStorage.getItem('dimsumCart')) || [];
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+        function parsePrice(priceStr) {
+            return parseInt(priceStr.replace(/[^0-9]/g, ''));
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             // Pencarian & Filter Logic
             const searchInputs = document.querySelectorAll('.search-input');
@@ -787,6 +923,119 @@
             const categoryPills = document.querySelectorAll('.category-pill');
             const productItems = document.querySelectorAll('.product-item');
             const noProductMsg = document.getElementById('noProductMsg');
+
+            // --- LOGIKA KERANJANG ---
+            const cartBadge = document.getElementById('cartBadge');
+            const cartItemsList = document.getElementById('cartItemsList');
+            const cartEmptyMsg = document.getElementById('cartEmptyMsg');
+            const cartFooter = document.getElementById('cartFooter');
+            const cartTotalPrice = document.getElementById('cartTotalPrice');
+            const btnCheckoutWA = document.getElementById('btnCheckoutWA');
+            const btnAddToCart = document.getElementById('btnAddToCart');
+            const modalQtyInput = document.getElementById('modalQty');
+
+            // Inisialisasi Toast
+            const cartToast = document.getElementById('cartToast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(cartToast);
+
+            function updateCartUI() {
+                localStorage.setItem('dimsumCart', JSON.stringify(cartItems));
+                
+                // Update Badge
+                const totalQty = cartItems.reduce((acc, item) => acc + item.qty, 0);
+                cartBadge.innerText = totalQty;
+                
+                // Animasi pada Badge
+                if (totalQty > 0) {
+                    cartBadge.classList.add('cart-bounce');
+                    setTimeout(() => {
+                        cartBadge.classList.remove('cart-bounce');
+                    }, 400);
+                }
+
+                // Update Modal Keranjang
+                if (cartItems.length === 0) {
+                    cartEmptyMsg.classList.remove('d-none');
+                    cartItemsList.classList.add('d-none');
+                    cartFooter.classList.add('d-none');
+                } else {
+                    cartEmptyMsg.classList.add('d-none');
+                    cartItemsList.classList.remove('d-none');
+                    cartFooter.classList.remove('d-none');
+
+                    cartItemsList.innerHTML = '';
+                    let total = 0;
+
+                    cartItems.forEach((item, index) => {
+                        const subtotal = item.priceNum * item.qty;
+                        total += subtotal;
+                        cartItemsList.innerHTML += `
+                            <div class="list-group-item p-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="${item.image}" class="rounded shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0 fw-bold">${item.title}</h6>
+                                        <small class="text-muted">${item.qty} x ${formatRupiah(item.priceNum)}</small>
+                                        <div class="fw-bold text-danger mt-1 small">${formatRupiah(subtotal)}</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-danger border-0" onclick="removeFromCart(${index})">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    cartTotalPrice.innerText = formatRupiah(total);
+                }
+            }
+
+            // Fungsi global untuk hapus item (karena dipanggil dari HTML string)
+            window.removeFromCart = function(index) {
+                cartItems.splice(index, 1);
+                updateCartUI();
+            };
+
+            btnAddToCart.addEventListener('click', function() {
+                const title = document.querySelector('.modalTitleDisplay').innerText;
+                const priceStr = document.querySelector('.modalHarga').innerText;
+                const image = document.querySelector('.modalImage img').src;
+                const qty = parseInt(modalQtyInput.value);
+
+                const existingItem = cartItems.find(item => item.title === title);
+                if (existingItem) {
+                    existingItem.qty += qty;
+                } else {
+                    cartItems.push({
+                        title: title,
+                        priceNum: parsePrice(priceStr),
+                        image: image,
+                        qty: qty
+                    });
+                }
+                
+                updateCartUI();
+                bootstrap.Modal.getInstance(document.getElementById('exampleModal')).hide();
+                
+                // Tampilkan Toast yang keren
+                toastMessage.innerHTML = `<strong>${qty}x ${title}</strong> berhasil masuk keranjang!`;
+                toastBootstrap.show();
+            });
+
+            btnCheckoutWA.addEventListener('click', function() {
+                const nomorWA = "6287858826267";
+                let listPesanan = "";
+                let totalAkhir = 0;
+
+                cartItems.forEach((item, i) => {
+                    listPesanan += `${i+1}. *${item.title}* (${item.qty}x) = ${formatRupiah(item.priceNum * item.qty)}%0A`;
+                    totalAkhir += item.priceNum * item.qty;
+                });
+
+                const pesan = `Halo Admin DimsumKu!%0A%0ASaya ingin memesan:%0A${listPesanan}%0A*Total Estimasi: ${formatRupiah(totalAkhir)}*%0A%0AMohon info total bayar dan ongkir ya min. Terima kasih!`;
+                window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
+            });
+            // --- END LOGIKA KERANJANG ---
 
             function filterProducts() {
                 const activePill = document.querySelector('.category-pill.btn-warning') || document.querySelector('[data-filter="all"]');
@@ -884,8 +1133,6 @@
             const modalImage = document.querySelector('.modalImage');
             const modalDeskripsi = document.querySelector('.modalDeskripsi');
             const modalHarga = document.querySelector('.modalHarga');
-            const btnBeli = document.querySelector('.btnBeli');
-            
             // Inisialisasi modal
             const bootstrapModal = new bootstrap.Modal(document.getElementById('exampleModal'));
 
@@ -915,16 +1162,12 @@
                     
                     modalDeskripsi.innerHTML = desc;
                     modalHarga.innerText = price;
+                    modalQtyInput.value = 1; // Reset quantity ke 1 setiap buka detail
 
-                    // Buat Link WA Checkout
-                    const nomorWA = "6287858826267"; 
-                    const isiPesan = `Halo Admin DimsumKu! %0A%0ASaya ingin checkout pesanan dari website:%0AMenu: *${title}*%0AHarga: ${price}%0A%0ATolong informasikan total bayar & ongkirnya ya. Terima kasih!`;
-                    const waUrl = `https://wa.me/${nomorWA}?text=${isiPesan}`;
-                    
-                    btnBeli.setAttribute('href', waUrl);
                     bootstrapModal.show();
                 });
             });
+            updateCartUI(); // Inisialisasi tampilan keranjang saat pertama kali muat
 
             // Fungsi Lihat Semua Ulasan
             const btnShowAllReviews = document.getElementById('btnShowAllReviews');

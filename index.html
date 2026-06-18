@@ -103,15 +103,13 @@
 
                 <!-- Navigasi & Cart -->
                 <div class="collapse navbar-collapse flex-grow-0 mt-3 mt-lg-0" id="navbarNav">
-                    <!-- Search Bar -->
-                <form class="d-flex flex-grow-1 mx-4">
-                    <input type="text" id="searchInput" class="form-control bg-light border-0" placeholder="Cari dimsum favoritmu...">
-                </form>
-            </div>
-        </nav>
-
-        <div id="menu" class="py-4">
-            <h3 class="text-center fw-bold mb-3">Pilihan Favoritmu</h3>
+                    <!-- Search Bar Mobile -->
+                    <form class="d-flex d-lg-none mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0" placeholder="Cari dimsum..." aria-label="Search">
+                            <button class="btn btn-warning" type="button"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
                     
                     <ul class="navbar-nav align-items-lg-center gap-2 gap-lg-3">
                         <li class="nav-item"><a href="#menu" class="nav-link text-dark fw-medium">Katalog</a></li>
@@ -136,6 +134,7 @@
         <!-- Banner Section -->
         <div class="px-0 px-md-4 mb-4 mt-md-3">
             <img src="banner-baru.png" 
+                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1200&q=80';" 
                  class="w-100 rounded-0 rounded-md-3 shadow-sm img-fluid" 
                  alt="Banner DimsumKu"
                  style="max-height: 400px; object-fit: cover;">
@@ -145,58 +144,16 @@
         <div id="menu" class="py-4">
             <h3 class="text-center fw-bold mb-3">Pilihan Favoritmu</h3>
             
-            <!-- Filter -->
-            <div class="d-flex justify-content-center flex-wrap gap-2 mb-5 px-4" id="filterContainer">
-                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill active-pill" data-filter="semua">Semua</button>
-                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill" data-filter="dikukus">Dikukus</button>
-                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill" data-filter="digoreng">Digoreng</button>
-                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill" data-filter="bestseller"><i class="bi bi-star-fill text-warning me-1"></i> Bestseller</button>
+            <!-- Filter Kategori ala Marketplace -->
+            <div class="d-flex justify-content-center flex-wrap gap-2 mb-5 px-4">
+                <button class="btn btn-warning rounded-pill px-4 fw-bold category-pill">Semua</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill">Dikukus</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill">Digoreng</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill"><i class="bi bi-star-fill text-warning me-1"></i> Bestseller</button>
             </div>
             
             <!-- Grid Katalog -->
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 px-4 pb-5" id="productGrid">
-                <!-- Data Produk -->
-                <div class="col product-card" data-kategori="dikukus" data-tags="dimsum ayam original">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1541696432-82c6da8ce7bf" class="card-img-top" alt="Dimsum Ayam Original">
-                        <div class="card-body">
-                            <h6 class="card-title fw-bold">Dimsum Ayam Original</h6>
-                            <span class="text-danger fw-bold harga">Rp 20.000</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col product-card" data-kategori="dikukus" data-tags="dimsum ayam mentai bestseller">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="position-absolute bg-danger text-white px-2 rounded-end-pill mt-2" style="font-size: 0.7rem;">Terlaris</div>
-                        <img src="https://images.unsplash.com/photo-1496116211227-7d3ccb8f4128" class="card-img-top" alt="Dimsum Ayam Mentai">
-                        <div class="card-body">
-                            <h6 class="card-title fw-bold">Dimsum Ayam Mentai</h6>
-                            <span class="text-danger fw-bold harga">Rp 25.000</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col product-card" data-kategori="digoreng" data-tags="dimsum goreng keju">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb" class="card-img-top" alt="Dimsum Goreng Keju">
-                        <div class="card-body">
-                            <h6 class="card-title fw-bold">Dimsum Goreng Keju</h6>
-                            <span class="text-danger fw-bold harga">Rp 30.000</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col product-card" data-kategori="digoreng" data-tags="dimsum goreng keju mentai bestseller">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="position-absolute bg-danger text-white px-2 rounded-end-pill mt-2" style="font-size: 0.7rem;">Terlaris</div>
-                        <img src="https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c" class="card-img-top" alt="Dimsum Goreng Keju Mentai">
-                        <div class="card-body">
-                            <h6 class="card-title fw-bold">Dimsum Goreng Keju Mentai</h6>
-                            <span class="text-danger fw-bold harga">Rp 35.000</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 px-4 px-md-5 pb-5">
                 <!-- Varian 1 -->
                 <div class="col">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
@@ -628,10 +585,6 @@
                     e.preventDefault();
                     // Mencari elemen pembungkus terdekat
                     const card = btn.closest('.card');
-
-                    const filterBtns = document.querySelectorAll('.category-pill');
-                    const productCards = document.querySelectorAll('.product-card');
-                    const searchInput = document.getElementById('searchInput');
                     
                     // Ekstrak data
                     const title = card.querySelector('.card-title').innerText.trim();
@@ -661,30 +614,6 @@
                     
                     btnBeli.setAttribute('href', waUrl);
                     bootstrapModal.show();
-
-                    // Fungsi Filter
-                    filterBtns.forEach(btn => {
-                        btn.addEventListener('click', () => {
-                            filterBtns.forEach(b => b.classList.remove('active-pill'));
-                        btn.classList.add('active-pill');
-                
-                    const filter = btn.getAttribute('data-filter');
-                
-                    productCards.forEach(card => {
-                    const matchesCategory = (filter === 'semua' || card.getAttribute('data-kategori') === filter || (filter === 'bestseller' && card.getAttribute('data-tags').includes('bestseller')));
-                    card.style.display = matchesCategory ? '' : 'none';
-                });
-            });
-        });
-
-                    // Fungsi Pencarian
-                    searchInput.addEventListener('input', (e) => {
-                    const query = e.target.value.toLowerCase();
-                        productCards.forEach(card => {
-                    const tags = card.getAttribute('data-tags');
-                    card.style.display = tags.includes(query) ? '' : 'none';
-                    });
-                    });
                 });
             });
         });

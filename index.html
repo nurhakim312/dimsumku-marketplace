@@ -59,6 +59,18 @@
             box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
             transition: all 0.3s ease;
         }
+        /* Style Mitra Logo */
+        .mitra-logo {
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            max-height: 80px;
+        }
+        .mitra-card:hover .mitra-logo {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body class="bg-light py-0 py-md-4">
@@ -89,10 +101,10 @@
                 </a>
 
                 <!-- Search Bar ala Marketplace (Hidden di Mobile, Tampil di Desktop) -->
-                <form class="d-none d-lg-flex flex-grow-1 mx-4">
+                <form class="d-none d-lg-flex flex-grow-1 mx-4" onsubmit="return false;">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0" placeholder="Cari dimsum favoritmu..." aria-label="Search">
-                        <button class="btn btn-warning px-4" type="button"><i class="bi bi-search"></i></button>
+                        <input type="text" class="form-control bg-light border-0 search-input" placeholder="Cari dimsum favoritmu..." aria-label="Search">
+                        <button class="btn btn-warning px-4 search-btn" type="button"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
 
@@ -104,10 +116,10 @@
                 <!-- Navigasi & Cart -->
                 <div class="collapse navbar-collapse flex-grow-0 mt-3 mt-lg-0" id="navbarNav">
                     <!-- Search Bar Mobile -->
-                    <form class="d-flex d-lg-none mb-3">
+                    <form class="d-flex d-lg-none mb-3" onsubmit="return false;">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0" placeholder="Cari dimsum..." aria-label="Search">
-                            <button class="btn btn-warning" type="button"><i class="bi bi-search"></i></button>
+                            <input type="text" class="form-control bg-light border-0 search-input" placeholder="Cari dimsum..." aria-label="Search">
+                            <button class="btn btn-warning search-btn" type="button"><i class="bi bi-search"></i></button>
                         </div>
                     </form>
                     
@@ -146,16 +158,24 @@
             
             <!-- Filter Kategori ala Marketplace -->
             <div class="d-flex justify-content-center flex-wrap gap-2 mb-5 px-4">
-                <button class="btn btn-warning rounded-pill px-4 fw-bold category-pill">Semua</button>
-                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill">Dikukus</button>
-                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill">Digoreng</button>
-                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill"><i class="bi bi-star-fill text-warning me-1"></i> Bestseller</button>
+                <button class="btn btn-warning rounded-pill px-4 fw-bold category-pill" data-filter="all">Semua</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill" data-filter="dikukus">Dikukus</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill" data-filter="digoreng">Digoreng</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill" data-filter="minuman">Minuman</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 category-pill" data-filter="bestseller"><i class="bi bi-star-fill text-warning me-1"></i> Bestseller</button>
             </div>
             
             <!-- Grid Katalog -->
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 px-4 px-md-5 pb-5">
+            <div id="productGrid" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 px-4 px-md-5 pb-5">
+                <!-- Pesan jika produk tidak ditemukan -->
+                <div id="noProductMsg" class="col-12 text-center py-5 d-none">
+                    <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+                    <h5 class="text-muted">Ups! Menu yang kamu cari tidak ditemukan.</h5>
+                    <p class="text-muted small">Coba cari dengan kata kunci lain atau pilih kategori yang tersedia.</p>
+                </div>
+
                 <!-- Varian 1 -->
-                <div class="col">
+                <div class="col product-item" data-category="dikukus">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
                         <img src="dimsum1.png" 
                              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80';" 
@@ -185,7 +205,7 @@
                 </div>
 
                 <!-- Varian 2 (Bestseller) -->
-                <div class="col">
+                <div class="col product-item" data-category="dikukus" data-bestseller="true">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
                         <!-- Badge Bestseller -->
                         <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 rounded-end-pill mt-3 shadow-sm fw-bold" style="font-size: 0.8rem; z-index: 2;">
@@ -219,7 +239,7 @@
                 </div>
 
                 <!-- Varian 3 -->
-                <div class="col">
+                <div class="col product-item" data-category="digoreng">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
                         <img src="dimsum3.png" 
                              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80';" 
@@ -249,7 +269,7 @@
                 </div>
 
                 <!-- Varian 4 (Promo) -->
-                <div class="col">
+                <div class="col product-item" data-category="digoreng">
                     <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
                         <!-- Badge Promo -->
                         <div class="position-absolute top-0 start-0 bg-warning text-dark px-3 py-1 rounded-end-pill mt-3 shadow-sm fw-bold" style="font-size: 0.8rem; z-index: 2;">
@@ -281,6 +301,113 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Minuman 1 -->
+                <div class="col product-item" data-category="minuman" data-bestseller="true">
+                    <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
+                        <!-- Badge Bestseller -->
+                        <div class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 rounded-end-pill mt-3 shadow-sm fw-bold" style="font-size: 0.8rem; z-index: 2;">
+                            Terlaris 🔥
+                        </div>
+                        <img src="matchalatte.avif" 
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=600&q=80';" 
+                             class="card-img-top" 
+                             alt="MatchaLatte">
+                        <div class="card-body pb-2">
+                            <h6 class="card-title fw-bold text-dark mb-1">MatchaLatte</h6>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-star-fill text-warning small me-1"></i>
+                                <span class="small text-muted">4.9 | Terjual 500+</span>
+                            </div>
+                        </div>
+                        <div class="d-none deskripsi">
+                            <p>MatchaLatte premium dengan perpaduan susu segar yang sangat creamy. Sangat cocok sebagai pendamping makan dimsum hangat.</p>
+                            <p class="fw-bold mt-2 text-primary">Detail Menu:</p>
+                            <ul>
+                                <li>Ukuran: 350ml</li>
+                                <li>Tingkat Manis: Bisa Request</li>
+                                <li>Es/Hangat: Tersedia</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 pt-0 d-flex flex-column gap-2 p-3">
+                            <span class="text-danger fw-bold fs-5 harga">Rp 15.000</span>
+                            <button class="btn btn-outline-primary btnDetail w-100"><i class="bi bi-cart-plus me-1"></i> Lihat Detail</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minuman 2 -->
+                <div class="col product-item" data-category="minuman">
+                    <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
+                        <img src="cappucino.jpg" 
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=600&q=80';" 
+                             class="card-img-top" 
+                             alt="Cappuchino">
+                        <div class="card-body pb-2">
+                            <h6 class="card-title fw-bold text-dark mb-1">Cappuchino</h6>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-star-fill text-warning small me-1"></i>
+                                <span class="small text-muted">4.8 | Terjual 300+</span>
+                            </div>
+                        </div>
+                        <div class="d-none deskripsi">
+                            <p>Cappuchino dengan foam susu yang lembut dan espresso pilihan. Rasa kopi yang seimbang dengan kelembutan susu.</p>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 pt-0 d-flex flex-column gap-2 p-3">
+                            <span class="text-danger fw-bold fs-5 harga">Rp 18.000</span>
+                            <button class="btn btn-outline-primary btnDetail w-100"><i class="bi bi-cart-plus me-1"></i> Lihat Detail</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minuman 3 -->
+                <div class="col product-item" data-category="minuman">
+                    <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
+                        <img src="creamylatte.jpg" 
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1461023233037-9619c23e6d29?auto=format&fit=crop&w=600&q=80';" 
+                             class="card-img-top" 
+                             alt="CreamyLatte">
+                        <div class="card-body pb-2">
+                            <h6 class="card-title fw-bold text-dark mb-1">CreamyLatte</h6>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-star-fill text-warning small me-1"></i>
+                                <span class="small text-muted">4.7 | Terjual 400+</span>
+                            </div>
+                        </div>
+                        <div class="d-none deskripsi">
+                            <p>Kopi susu yang ekstra creamy dengan rasa manis yang pas. Mood booster yang tepat di sela hari-hari kamu.</p>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 pt-0 d-flex flex-column gap-2 p-3">
+                            <span class="text-danger fw-bold fs-5 harga">Rp 17.000</span>
+                            <button class="btn btn-outline-primary btnDetail w-100"><i class="bi bi-cart-plus me-1"></i> Lihat Detail</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minuman 4 -->
+                <div class="col product-item" data-category="minuman">
+                    <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden position-relative">
+                        <img src="americano.jpg" 
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1551033406-611cf9a28f67?auto=format&fit=crop&w=600&q=80';" 
+                             class="card-img-top" 
+                             alt="Americano">
+                        <div class="card-body pb-2">
+                            <h6 class="card-title fw-bold text-dark mb-1">Americano</h6>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-star-fill text-warning small me-1"></i>
+                                <span class="small text-muted">4.6 | Terjual 200+</span>
+                            </div>
+                        </div>
+                        <div class="d-none deskripsi">
+                            <p>Espresso shot murni dengan tambahan air mineral. Cocok bagi kamu yang menyukai cita rasa kopi yang strong dan bersih.</p>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 pt-0 d-flex flex-column gap-2 p-3">
+                            <span class="text-danger fw-bold fs-5 harga">Rp 12.000</span>
+                            <button class="btn btn-outline-primary btnDetail w-100"><i class="bi bi-cart-plus me-1"></i> Lihat Detail</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -302,7 +429,7 @@
                             <span class="text-muted small">/ 5.0 (10k+ Ulasan)</span>
                         </div>
                     </div>
-                    <a href="#" class="text-primary text-decoration-none d-none d-md-block">Lihat Semua ></a>
+                <a href="#" id="btnShowAllReviews" class="text-primary text-decoration-none">Lihat Semua ></a>
                 </div>
 
                 <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -352,6 +479,90 @@
                                 <span class="ms-auto text-success small"><i class="bi bi-check-circle-fill"></i> Pembeli</span>
                             </div>
                             <p class="text-muted small mb-0">"Udah repeat order ke 3 kalinya. Chili oilnya pedes nampol dan nagih. Cuma saran, varian minumannya dibanyakin lagi ya min. Sukses terus DimsumKu!"</p>
+                        </div>
+                    </div>
+                    <!-- Ulasan 4 (Extra - Hidden by Default) -->
+                    <div class="col d-none extra-review">
+                        <div class="card h-100 border-0 shadow-sm testimonial-card p-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="https://ui-avatars.com/api/?name=Andi+H&background=random&rounded=true" alt="Avatar" width="40" height="40" class="me-3">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Andi Hermawan</h6>
+                                    <div class="text-warning small" style="font-size: 0.75rem;">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <span class="ms-auto text-success small"><i class="bi bi-check-circle-fill"></i> Pembeli</span>
+                            </div>
+                            <p class="text-muted small mb-0">"Porsi isi 10 sangat worth it buat makan bareng temen kantor. Dimsumnya padat daging bukan cuma tepung."</p>
+                        </div>
+                    </div>
+                    <!-- Ulasan 5 (Extra - Hidden by Default) -->
+                    <div class="col d-none extra-review">
+                        <div class="card h-100 border-0 shadow-sm testimonial-card p-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="https://ui-avatars.com/api/?name=Rina+W&background=random&rounded=true" alt="Avatar" width="40" height="40" class="me-3">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Rina Wijaya</h6>
+                                    <div class="text-warning small" style="font-size: 0.75rem;">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <span class="ms-auto text-success small"><i class="bi bi-check-circle-fill"></i> Pembeli</span>
+                            </div>
+                            <p class="text-muted small mb-0">"Packagingnya mewah banget buat harga segini. Saos mentainya smoky dan gurihnya pas. Gak pelit bumbu!"</p>
+                        </div>
+                    </div>
+                    <!-- Ulasan 6 (Extra - Hidden by Default) -->
+                    <div class="col d-none extra-review">
+                        <div class="card h-100 border-0 shadow-sm testimonial-card p-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="https://ui-avatars.com/api/?name=Eko+P&background=random&rounded=true" alt="Avatar" width="40" height="40" class="me-3">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Eko Prasetyo</h6>
+                                    <div class="text-warning small" style="font-size: 0.75rem;">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <span class="ms-auto text-success small"><i class="bi bi-check-circle-fill"></i> Pembeli</span>
+                            </div>
+                            <p class="text-muted small mb-0">"Pengiriman cepet banget, nyampe masih ngepul. Chili oilnya juara sih, pedesnya pas di lidah saya."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seksi Bekerja Sama (Partnership) -->
+        <div id="kemitraan" class="px-4 py-5 bg-white border-bottom">
+            <div class="container">
+                <h4 class="fw-bold text-center mb-5">Kami Juga Tersedia Di</h4>
+                <div class="row row-cols-2 row-cols-lg-4 g-4 justify-content-center align-items-center text-center">
+                    <!-- ShopeeFood -->
+                    <div class="col mitra-card">
+                        <div class="p-3">
+                            <img src="Shopee-food.png" 
+                                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Shopee.svg/1200px-Shopee.svg.png';" 
+                                 alt="ShopeeFood" class="img-fluid mitra-logo mb-2">
+                            <h6 class="fw-bold mb-0">ShopeeFood</h6>
+                        </div>
+                    </div>
+                    <!-- GrabFood -->
+                    <div class="col mitra-card">
+                        <div class="p-3">
+                            <img src="Grab-food.png" 
+                                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Grab_logo.svg/1280px-Grab_logo.svg.png';" 
+                                 alt="GrabFood" class="img-fluid mitra-logo mb-2">
+                            <h6 class="fw-bold mb-0">GrabFood</h6>
+                        </div>
+                    </div>
+                    <!-- GoFood -->
+                    <div class="col mitra-card">
+                        <div class="p-3">
+                            <img src="go-food.png" 
+                                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Gojek_logo_2019.svg/1200px-Gojek_logo_2019.svg.png';" 
+                                 alt="GoFood" class="img-fluid mitra-logo mb-2">
+                            <h6 class="fw-bold mb-0">GoFood</h6>
                         </div>
                     </div>
                 </div>
@@ -570,6 +781,104 @@
     <!-- Custom JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Pencarian & Filter Logic
+            const searchInputs = document.querySelectorAll('.search-input');
+            const searchBtns = document.querySelectorAll('.search-btn');
+            const categoryPills = document.querySelectorAll('.category-pill');
+            const productItems = document.querySelectorAll('.product-item');
+            const noProductMsg = document.getElementById('noProductMsg');
+
+            function filterProducts() {
+                const activePill = document.querySelector('.category-pill.btn-warning') || document.querySelector('[data-filter="all"]');
+                const filterValue = activePill ? activePill.getAttribute('data-filter') : 'all';
+                // Ambil nilai dari input yang sedang aktif
+                const searchText = (searchInputs[0].value || searchInputs[1].value).toLowerCase().trim();
+
+                let visibleCount = 0;
+
+                productItems.forEach(item => {
+                    const title = item.querySelector('.card-title').innerText.toLowerCase();
+                    const category = item.getAttribute('data-category');
+                    const isBestseller = item.getAttribute('data-bestseller') === 'true';
+                    
+                    let matchCategory = false;
+                    if (filterValue === 'all') matchCategory = true;
+                    else if (filterValue === 'bestseller') matchCategory = isBestseller;
+                    else matchCategory = (category === filterValue);
+
+                    const matchSearch = title.includes(searchText);
+
+                    if (matchCategory && matchSearch) {
+                        item.classList.remove('d-none');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('d-none');
+                    }
+                });
+
+                // Tampilkan pesan jika tidak ada produk yang cocok
+                if (visibleCount === 0) noProductMsg.classList.remove('d-none');
+                else noProductMsg.classList.add('d-none');
+            }
+
+            searchInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    // Sinkronisasi teks antar search bar (Desktop & Mobile)
+                    searchInputs.forEach(other => { if (other !== input) other.value = input.value; });
+                    filterProducts();
+                });
+            });
+
+            // Fungsi pencarian saat tombol kaca pembesar diklik
+            searchBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterProducts();
+                    // Scroll otomatis ke bagian menu agar hasil terlihat
+                    document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Menangani pencarian saat menekan tombol "Enter" di keyboard
+            searchInputs.forEach(input => {
+                input.parentElement.closest('form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    filterProducts();
+                    // Scroll otomatis ke bagian menu
+                    document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+                    input.blur(); // Menutup keyboard di HP setelah enter
+                });
+            });
+
+            categoryPills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    categoryPills.forEach(p => {
+                        p.classList.remove('btn-warning', 'fw-bold');
+                        p.classList.add('btn-outline-secondary');
+                        
+                        // Reset semua ikon bintang kembali ke warna kuning (warning)
+                        const starIcon = p.querySelector('.bi-star-fill');
+                        if (starIcon) {
+                            starIcon.classList.remove('text-danger');
+                            starIcon.classList.add('text-warning');
+                        }
+                    });
+
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-warning', 'fw-bold');
+
+                    // Jika tombol yang diklik adalah Bestseller, ubah warna bintangnya jadi merah (danger)
+                    if (this.getAttribute('data-filter') === 'bestseller') {
+                        const starIcon = this.querySelector('.bi-star-fill');
+                        if (starIcon) {
+                            starIcon.classList.remove('text-warning');
+                            starIcon.classList.add('text-danger');
+                        }
+                    }
+
+                    filterProducts();
+                });
+            });
+
             const btnDetails = document.querySelectorAll('.btnDetail');
             const modalTitleDisplays = document.querySelectorAll('.modalTitleDisplay');
             const modalImage = document.querySelector('.modalImage');
@@ -615,6 +924,18 @@
                     btnBeli.setAttribute('href', waUrl);
                     bootstrapModal.show();
                 });
+            });
+
+            // Fungsi Lihat Semua Ulasan
+            const btnShowAllReviews = document.getElementById('btnShowAllReviews');
+            const extraReviews = document.querySelectorAll('.extra-review');
+
+            btnShowAllReviews.addEventListener('click', function (e) {
+                e.preventDefault();
+                extraReviews.forEach(review => {
+                    review.classList.toggle('d-none');
+                });
+                this.innerText = this.innerText.includes('Lihat Semua') ? 'Sembunyikan <' : 'Lihat Semua >';
             });
         });
     </script>
